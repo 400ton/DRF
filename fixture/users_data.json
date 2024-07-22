@@ -1,0 +1,42 @@
+[
+  {
+    "model": "users.payments",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "date_payment": "2022",
+      "course_paid": 1,
+      "payment_amount": "10000"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "date_payment": "2023",
+      "lesson_paid": 2,
+      "payment_amount": "2000"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 3,
+    "fields": {
+      "user": 2,
+      "date_payment": "2023",
+      "course_paid": 1,
+      "payment_amount": "10000"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 4,
+    "fields": {
+      "user": 1,
+      "date_payment": "2022",
+      "lesson_paid": 3,
+      "payment_amount": "2000"
+    }
+  }
+]
