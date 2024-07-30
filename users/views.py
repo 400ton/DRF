@@ -1,7 +1,7 @@
 from rest_framework.filters import OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from users.models import User, Payments
 from users.serializers import UserSerializer, PaymentsSerializer
@@ -20,6 +20,13 @@ class UserUpdate(generics.UpdateAPIView):
 
 class UserCreate(generics.CreateAPIView):
     serializer_class = UserSerializer
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+
+    def perform_create(self, serializer):
+        user = serializer.save(is_active=True)
+        user.set_password(user.password)
+        user.save()
 
 
 class UserDelete(generics.DestroyAPIView):
@@ -34,3 +41,7 @@ class PaymentsList(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['course', 'lesson', 'payment_method']
     ordering_fields = ['date_payment']
+
+
+def PaymentsCreate():
+    pass
