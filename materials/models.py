@@ -7,9 +7,10 @@ NULLABLE = {"blank": True, "null": True}
 
 class Course(models.Model):
     title = models.CharField(max_length=255, verbose_name='название')
-    preview = models.ImageField(upload_to='lms/', **NULLABLE)
+    preview = models.ImageField(upload_to='media/course/preview', **NULLABLE)
     description = models.TextField(max_length=250, verbose_name='описание')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='владелец')
+    url = models.URLField(max_length=150, verbose_name='Ссылка', **NULLABLE)
 
     def __str__(self):
         return f'{self.title}'
@@ -22,10 +23,11 @@ class Course(models.Model):
 class Lesson(models.Model):
     title = models.CharField(max_length=255, verbose_name='название')
     description = models.TextField(max_length=250, verbose_name='описание')
-    video = models.FileField(upload_to='lms/', **NULLABLE)
-    preview = models.ImageField(upload_to='lms/', **NULLABLE)
+    video = models.FileField(upload_to='media/lesson/video', **NULLABLE)
+    preview = models.ImageField(upload_to='media/lesson/preview', **NULLABLE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='курс', related_name='course')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='владелец')
+    url = models.URLField(max_length=150, verbose_name='Ссылка', **NULLABLE)
 
     def __str__(self):
         return f'{self.title}'
