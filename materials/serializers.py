@@ -13,7 +13,7 @@ class LessonSerializer(serializers.ModelSerializer):
 
 
 class CourseSerializer(serializers.ModelSerializer):
-    url = serializers.CharField(validators=[validates_url])
+    url = serializers.CharField(validators=[validates_url], read_only=True)
     lesson_count = serializers.SerializerMethodField()
     lessons = LessonSerializer(source='lesson', many=True, read_only=True)
     is_subscribed = serializers.SerializerMethodField()
