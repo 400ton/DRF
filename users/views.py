@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from users.models import User, Payments
 from users.serializers import UserSerializer, PaymentsSerializer
+from users.services import create_stripe_price, create_stripe_session
 
 
 class UserList(generics.ListAPIView):
@@ -34,14 +35,15 @@ class UserDelete(generics.DestroyAPIView):
     queryset = User.objects.all()
 
 
-class PaymentsList(generics.ListAPIView):
-    permission_classes = [IsAuthenticated]
-    queryset = Payments.objects.all()
+class PaymentsCreateAPIView(generics.CreateAPIView):
     serializer_class = PaymentsSerializer
-    filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filterset_fields = ['course', 'lesson', 'payment_method']
-    ordering_fields = ['date_payment']
+    queryset = Payments.objects.all()
 
+    def perform_create(self, serializer):
+        payment = serializer.save(user=self.request.user)
+        price = create_stripe_price(payment.payment_sum)
+        session_id, payment_link = create_stripe_session(price)
 
-def PaymentsCreate():
-    pass
+        payment.session_id = session_id
+        payment.link = payment_link
+        payment.save()
