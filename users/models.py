@@ -43,12 +43,11 @@ class Payments(models.Model):
         ('transfer', 'перевод'),
     )
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Пользователь'),
     date_of_payment = models.DateTimeField(auto_now_add=True, verbose_name='Дата оплаты'),
     paid_course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="Оплаченный курс", **NULLABLE),
     paid_lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name="Оплаченный урок", **NULLABLE),
     payment_sum = models.PositiveIntegerField(verbose_name='Cумма платежа')
-
+    user = models.ForeignKey(User, max_length=50, on_delete=models.CASCADE, related_name='Пользователь', **NULLABLE)
     payment_method = models.CharField(max_length=50, choices=method_variants, verbose_name='Способ оплаты')
 
     session_id = models.CharField(max_length=255, verbose_name='Id сессии', **NULLABLE)
